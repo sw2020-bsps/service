@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bsps.member.MemberMapper">
+    <resultMap id="memberResultMap" type="com.bsps.member.Member">
+        <result column="EMAIL_ADDRESS" property="emailAddress" />
+        <result column="PASSWORD" property="password" />
+        <result column="NAME" property="name" />
+        <result column="PHONE_NO" property="phoneNo" />
+        <result column="ZIP_CODE" property="zipCode" />
+        <result column="ADDRESS" property="address" />
+        <result column="DETAIL_ADDRESS" property="detailAddress" />
+        <result column="TYPE" property="type" />
+        <result column="STATUS" property="status" />
+    </resultMap>
+
+    <sql id="whereSql">
+        <where>
+            <if test="emailAddress != null and emailAddress != ''">
+                AND EMAIL_ADDRESS = #{emailAddress}
+            </if>
+            <if test="password != null and password != ''">
+                AND PASSWORD = #{password}
+            </if>
+            <if test="name != null and name != ''">
+                AND NAME = #{name}
+            </if>
+            <if test="phoneNo != null and phoneNo != ''">
+                AND PHONE_NO = #{phoneNo}
+            </if>
+            <if test="zipCode != null and zipCode != ''">
+                AND ZIP_CODE = #{zipCode}
+            </if>
+            <if test="address != null and address != ''">
+                AND ADDRESS = #{address}
+            </if>
+            <if test="detailAddress != null and detailAddress != ''">
+                AND DETAIL_ADDRESS = #{detailAddress}
+            </if>
+            <if test="type != null and type != ''">
+                AND TYPE = #{type}
+            </if>
+            <if test="status != null and status != ''">
+                AND STATUS = #{status}
+            </if>
+        </where>
+    </sql>
+
+	<select id="selectAll" resultMap="memberResultMap">
+        SELECT
+            EMAIL_ADDRESS
+            , PASSWORD
+            , NAME
+            , PHONE_NO
+            , ZIP_CODE
+            , ADDRESS
+            , DETAIL_ADDRESS
+            , TYPE
+            , STATUS
+        FROM MEMBER
+    </select>
+
+    <select id="select" parameterType="com.bsps.member.Member" resultMap="memberResultMap">
+        SELECT
+            EMAIL_ADDRESS
+            , PASSWORD
+            , NAME
+            , PHONE_NO
+            , ZIP_CODE
+            , ADDRESS
+            , DETAIL_ADDRESS
+            , TYPE
+            , STATUS
+        FROM MEMBER
+        <include refid="whereSql" />
+        ORDER BY EMAIL_ADDRESS
+    </select>
+
+    <insert id="insert" parameterType="com.bsps.member.Member">
+        INSERT INTO MEMBER (
+            EMAIL_ADDRESS
+            , PASSWORD
+            , NAME
+            , PHONE_NO
+            , ZIP_CODE
+            , ADDRESS
+            , DETAIL_ADDRESS
+        ) VALUES (
+            #{emailAddress}
+            , #{password}
+            , #{name}
+            , #{phoneNo}
+            , #{zipCode}
+            , #{address}
+            , #{detailAddress}
+        )
+    </insert>
+
+    <update id="update" parameterType="com.bsps.member.Member">
+        UPDATE MEMBER
+        <set>
+            <if test="emailAddress != null and emailAddress != ''">
+                EMAIL_ADDRESS = #{emailAddress},
+            </if>
+            <if test="password != null and password != ''">
+                PASSWORD = #{password},
+            </if>
+            <if test="name != null and name != ''">
+                NAME = #{name},
+            </if>
+            <if test="phoneNo != null and phoneNo != ''">
+                PHONE_NO = #{phoneNo},
+            </if>
+            <if test="zipCode != null and zipCode != ''">
+                ZIP_CODE = #{zipCode},
+            </if>
+            <if test="address != null and address != ''">
+                ADDRESS = #{address},
+            </if>
+            <if test="detailAddress != null and detailAddress != ''">
+                DETAIL_ADDRESS = #{detailAddress},
+            </if>
+            <if test="type != null and type != ''">
+                TYPE = #{type},
+            </if>
+            <if test="status != null and status != ''">
+                STATUS = #{status},
+            </if>
+        </set>
+        WHERE EMAIL_ADDRESS = #{emailAddress}
+    </update>
+</mapper>

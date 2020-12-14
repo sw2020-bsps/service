@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bsps.order.orderhistory.OrderHistoryMapper">
+    <resultMap id="orderHistoryResultMap" type="com.bsps.order.orderhistory.OrderHistory">
+        <result column="ORDER_HISTORY_NO" property="orderHistoryNo" />
+        <result column="ORDER_SHEET_NO" property="orderSheetNo" />
+        <result column="BEANS_NO" property="beansNo" />
+        <result column="WEIGHT" property="weight" />
+        <result column="PRICE" property="price" />
+    </resultMap>
+
+    <sql id="whereSql">
+        <where>
+            <if test="orderHistoryNo != null and orderHistoryNo != ''">
+                AND ORDER_HISTORY_NO = #{orderHistoryNo}
+            </if>
+            <if test="orderSheetNo != null and orderSheetNo != ''">
+                AND ORDER_SHEET_NO = #{orderSheetNo}
+            </if>
+            <if test="beansNo != null and beansNo != ''">
+                AND BEANS_NO = #{beansNo}
+            </if>
+            <if test="weight != null and weight != ''">
+                AND WEIGHT = #{weight}
+            </if>
+            <if test="price != null and price != ''">
+                AND PRICE = #{price}
+            </if>
+        </where>
+    </sql>
+
+    <select id="selectAll" parameterType="com.bsps.order.orderhistory.OrderHistory" resultMap="orderHistoryResultMap">
+        SELECT
+            ORDER_HISTORY_NO
+            , ORDER_SHEET_NO
+            , BEANS_NO
+            , WEIGHT
+            , PRICE
+        FROM ORDER_HISTORY
+        <include refid="whereSql" />
+    </select>
+
+    <insert id="insert" parameterType="com.bsps.order.orderhistory.OrderHistory">
+        INSERT INTO ORDER_HISTORY (
+            ORDER_SHEET_NO
+            , BEANS_NO
+            , WEIGHT
+            , PRICE
+        ) VALUES (
+            #{orderSheetNo}
+            , #{beansNo}
+            , #{weight}
+            , #{price}
+        )
+    </insert>
+
+    <update id="update" parameterType="com.bsps.order.orderhistory.OrderHistory">
+        UPDATE ORDER_HISTORY
+        <set>
+            <if test="orderHistory != null and orderHistoryNo != ''">
+                ORDER_HISTORY_NO = #{orderHistoryNo},
+            </if>
+            <if test="orderSheetNo != null and orderSheetNo != ''">
+                ORDER_SHEET_NO = #{orderSheetNo},
+            </if>
+            <if test="beansNo != null and beansNo != ''">
+                BEANS_NO = #{beansNo},
+            </if>
+            <if test="weight != null and weight != ''">
+                WEIGHT = #{weight},
+            </if>
+            <if test="price != null and price != ''">
+                PRICE = #{price},
+            </if>
+        </set>
+        <include refid="whereSql" />
+    </update>
+
+    <delete id="delete" parameterType="com.bsps.order.orderhistory.OrderHistory">
+        DELETE FROM ORDER_HISTORY
+        <include refid="whereSql" />
+    </delete>
+</mapper>

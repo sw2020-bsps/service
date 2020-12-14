@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bsps.beans.BeansMapper">
+    <resultMap id="beansResultMap" type="com.bsps.beans.Beans">
+        <result column="BEANS_NO" property="beansNo" />
+        <result column="CATEGORY_NO" property="categoryNo" />
+        <result column="PICTURE_NO" property="pictureNo" />
+        <result column="NAME" property="name" />
+        <result column="DESCRIPTION" property="description" />
+        <result column="STOCK_WEIGHT" property="stockWeight" />
+        <result column="PRICE" property="price" />
+        <result column="DISPLAY_STATUS" property="displayStatus" />
+    </resultMap>
+
+    <sql id="whereSql">
+        <where>
+            <if test="beansNo != null and beansNo != ''">
+                AND BEANS_NO = #{beansNo}
+            </if>
+            <if test="categoryNo != null and categoryNo != ''">
+                AND CATEGORY_NO = #{categoryNo}
+            </if>
+            <if test="pictureNo != null and pictureNo != ''">
+                AND PICTURE_NO = #{pictureNo}
+            </if>
+            <if test="name != null and name != ''">
+                AND NAME = #{name}
+            </if>
+            <if test="description != null and description != ''">
+                AND DESCRIPTION = #{description}
+            </if>
+            <if test="stockWeight != null and stockWeight != ''">
+                AND STOCK_WEIGHT = #{stockWeight}
+            </if>
+            <if test="price != null and price != ''">
+                AND PRICE = #{price}
+            </if>
+            <if test="displayStatus != null and displayStatus != ''">
+                AND DISPLAY_STATUS = #{displayStatus}
+            </if>
+        </where>
+    </sql>
+
+    <select id="selectAll" parameterType="com.bsps.beans.Beans" resultMap="beansResultMap">
+        SELECT
+        	BEANS_NO
+            , CATEGORY_NO
+            , PICTURE_NO
+            , NAME
+            , DESCRIPTION
+            , STOCK_WEIGHT
+            , PRICE
+            , DISPLAY_STATUS
+        FROM BEANS
+        <include refid="whereSql" />
+        ORDER BY BEANS_NO
+    </select>
+
+    <select id="select" parameterType="com.bsps.beans.Beans" resultMap="beansResultMap">
+        SELECT
+            BEANS_NO
+            , CATEGORY_NO
+            , PICTURE_NO
+            , NAME
+            , DESCRIPTION
+            , STOCK_WEIGHT
+            , PRICE
+            , DISPLAY_STATUS
+        FROM BEANS
+        <include refid="whereSql" />
+        ORDER BY BEANS_NO
+    </select>
+    
+    <insert id="insert" parameterType="com.bsps.beans.Beans">
+        INSERT INTO BEANS (
+            NAME
+            , CATEGORY_NO
+            <if test="pictureNo != null and pictureNo != ''">
+                , PICTURE_NO
+            </if>
+            , DESCRIPTION
+            , STOCK_WEIGHT
+            , PRICE
+        ) VALUES (
+            #{name}
+            , #{categoryNo}
+            <if test="pictureNo != null and pictureNo != ''">
+                , #{pictureNo}
+            </if>
+            , #{description}
+            , #{stockWeight}
+            , #{price}
+        )
+    </insert>
+
+    <update id="update" parameterType="com.bsps.beans.Beans">
+        UPDATE BEANS
+        <set>
+            <if test="beansNo != null and beansNo != ''">
+                BEANS_NO = #{beansNo},
+            </if>
+            <if test="categoryNo != null and categoryNo != ''">
+                CATEGORY_NO = #{categoryNo},
+            </if>
+            <if test="pictureNo != null and pictureNo != ''">
+                PICTURE_NO = #{pictureNo},
+            </if>
+            <if test="name != null and name != ''">
+                NAME = #{name},
+            </if>
+            <if test="description != null and description != ''">
+                DESCRIPTION = #{description},
+            </if>
+            <if test="stockWeight != null">
+                STOCK_WEIGHT = #{stockWeight},
+            </if>
+            <if test="price != null and price != ''">
+                PRICE = #{price},
+            </if>
+            <if test="displayStatus != null and displayStatus != ''">
+                DISPLAY_STATUS = #{displayStatus},
+            </if>
+        </set>
+        WHERE BEANS_NO = #{beansNo}
+    </update>
+</mapper>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bsps.beans.picture.PictureMapper">
+    <resultMap id="pictureResultMap" type="com.bsps.beans.picture.Picture">
+        <result column="PICTURE_NO" property="pictureNo" />
+        <result column="PATH" property="path" />
+        <result column="LOGICAL_FILE_NAME" property="logicalFileName" />
+        <result column="PHYSICAL_FILE_NAME" property="physicalFileName" />
+    </resultMap>
+
+    <sql id="whereSql">
+        <where>
+            <if test="pictureNo != null and pictureNo != ''">
+                AND PICTURE_NO = #{pictureNo}
+            </if>
+            <if test="path != null and path != ''">
+                AND PATH = #{path}
+            </if>
+            <if test="logicalFileName != null and logicalFileName != ''">
+                AND LOGICAL_FILE_NAME = #{logicalFileName}
+            </if>
+            <if test="physicalFileName != null and physicalFileName != ''">
+                AND PHYSICAL_FILE_NAME = #{physicalFileName}
+            </if>
+        </where>
+    </sql>
+
+	<select id="selectAll" resultMap="pictureResultMap">
+        SELECT
+            PICTURE_NO
+            , PATH
+            , LOGICAL_FILE_NAME
+            , PHYSICAL_FILE_NAME
+        FROM PICTURE
+        ORDER BY PICTURE_NO
+    </select>
+
+    <select id="select" parameterType="com.bsps.beans.picture.Picture" resultMap="pictureResultMap">
+        SELECT
+            PICTURE_NO
+            , PATH
+            , LOGICAL_FILE_NAME
+            , PHYSICAL_FILE_NAME
+        FROM picture
+        <include refid="whereSql" />
+    </select>
+
+    <insert id="insert" parameterType="com.bsps.beans.picture.Picture">
+        INSERT INTO PICTURE (
+            PATH
+            , LOGICAL_FILE_NAME
+            , PHYSICAL_FILE_NAME
+        ) VALUES (
+            #{path}
+            , #{logicalFileName}
+            , #{physicalFileName}
+        )
+    </insert>
+
+    <update id="update" parameterType="com.bsps.beans.picture.Picture">
+        UPDATE PICTURE
+        <set>
+            <if test="pictureNo != null and pictureNo != ''">
+                PICTURE_NO = #{pictureNo},
+            </if>
+            <if test="path != null and path != ''">
+                PATH = #{path},
+            </if>
+            <if test="logicalFileName != null and logicalFileName != ''">
+                LOGICAL_FILE_NAME = #{logicalFileName},
+            </if>
+            <if test="physicalFileName != null and physicalFileName != ''">
+                PHYSICAL_FILE_NAME = #{physicalFileName},
+            </if>
+        </set>
+        WHERE PICTURE_NO = #{pictureNo}
+    </update>
+</mapper>

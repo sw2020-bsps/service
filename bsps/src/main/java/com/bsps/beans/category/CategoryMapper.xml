@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bsps.beans.category.CategoryMapper">
+    <resultMap id="categoryResultMap" type="com.bsps.beans.category.Category">
+        <result column="CATEGORY_NO" property="categoryNo" />
+        <result column="CATEGORY_NAME" property="categoryName" />
+    </resultMap>
+
+    <sql id="whereSql">
+        <where>
+            <if test="categoryNo != null and categoryNo != ''">
+                AND CATEGORY_NO = #{categoryNo}
+            </if>
+            <if test="categoryName != null and categoryName != ''">
+                AND CATEGORY_NAME = #{categoryName}
+            </if>
+        </where>
+    </sql>
+
+    <select id="selectAll" resultMap="categoryResultMap">
+        SELECT
+        	CATEGORY_NO
+            , CATEGORY_NAME
+        FROM category
+        ORDER BY CATEGORY_NO
+    </select>
+
+    <select id="select" parameterType="com.bsps.beans.category.Category" resultMap="categoryResultMap">
+        SELECT
+        	CATEGORY_NO
+            , CATEGORY_NAME
+        FROM category
+        <include refid="whereSql" />
+    </select>
+</mapper>

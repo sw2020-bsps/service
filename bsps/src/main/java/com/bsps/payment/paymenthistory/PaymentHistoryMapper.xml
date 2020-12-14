@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bsps.payment.paymenthistory.PaymentHistoryMapper">
+    <resultMap id="paymentHistoryResultMap" type="com.bsps.payment.paymenthistory.PaymentHistory">
+        <result column="PAYMENT_NO" property="paymentNo" />
+        <result column="ORDER_SHEET_NO" property="orderSheetNo" />
+        <result column="PAYMENT_DATE" property="paymentDate" />
+        <result column="PAYMENT_PRICE" property="paymentPrice" />
+    </resultMap>
+
+    <sql id="whereSql">
+        <where>
+            <if test="paymentNo != null and paymentNo != ''">
+                AND PAYMENT_NO = #{paymentNo}
+            </if>
+            <if test="orderSheetNo != null and orderSheetNo != ''">
+                AND ORDER_SHEET_NO = #{orderSheetNo}
+            </if>
+            <if test="paymentDate != null">
+                AND PAYMENT_DATE = #{paymentDate}
+            </if>
+            <if test="paymentPrice != null and paymentPrice != ''">
+                AND PAYMENT_PRICE = #{paymentPrice}
+            </if>
+        </where>
+    </sql>
+
+    <select id="select" parameterType="com.bsps.payment.paymenthistory.PaymentHistory" resultMap="paymentHistoryResultMap">
+        SELECT
+            PAYMENT_NO
+            , ORDER_SHEET_NO
+            , PAYMENT_DATE
+            , PAYMENT_PRICE
+        FROM PAYMENT_HISTORY
+        <include refid="whereSql" />
+    </select>
+
+    <insert id="insert" parameterType="com.bsps.payment.paymenthistory.PaymentHistory">
+        INSERT INTO PAYMENT_HISTORY (
+            PAYMENT_NO
+            , ORDER_SHEET_NO
+            , PAYMENT_DATE
+            , PAYMENT_PRICE
+        ) VALUES (
+            #{paymentNo}
+            , #{orderSheetNo}
+            , #{paymentDate}
+            , #{paymentPrice}
+        )
+    </insert>
+</mapper>

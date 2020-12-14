@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bsps.order.ordersheet.OrderSheetMapper">
+    <resultMap id="orderSheetResultMap" type="com.bsps.order.ordersheet.OrderSheet">
+        <result column="ORDER_SHEET_NO" property="orderSheetNo" />
+        <result column="EMAIL_ADDRESS" property="emailAddress" />
+        <result column="ZIP_CODE" property="zipCode" />
+        <result column="ADDRESS" property="address" />
+        <result column="DETAIL_ADDRESS" property="detailAddress" />
+        <result column="ORDER_DATE" property="orderDate" />
+        <result column="CANCLE_DATE" property="cancleDate" />
+        <result column="ORDER_PRICE" property="orderPrice" />
+        <result column="PAYMENT_STATUS" property="paymentStatus" />
+        <result column="DISPLAY_STATUS" property="displayStatus" />
+    </resultMap>
+
+    <sql id="whereSql">
+        <where>
+            <if test="orderSheetNo != null and orderSheetNo != ''">
+                AND ORDER_SHEET_NO = #{orderSheetNo}
+            </if>
+            <if test="emailAddress != null and emailAddress != ''">
+                AND EMAIL_ADDRESS = #{emailAddress}
+            </if>
+            <if test="zipCode != null and zipCode != ''">
+                AND ZIP_CODE = #{zipCode}
+            </if>
+            <if test="address != null and address != ''">
+                AND ADDRESS = #{address}
+            </if>
+            <if test="detailAddress != null and detailAddress != ''">
+                AND DETAIL_ADDRESS = #{detailAddress}
+            </if>
+            <if test="orderDate != null">
+                AND ORDER_DATE = #{orderDate}
+            </if>
+            <if test="cancleDate != null">
+                AND CANCLE_DATE = #{cancleDate}
+            </if>
+            <if test="orderPrice != null and orderPrice != ''">
+                AND ORDER_PRICE = #{orderPrice}
+            </if>
+            <if test="paymentStatus != null and paymentStatus != ''">
+                AND PAYMENT_STATUS = #{paymentStatus}
+            </if>
+            <if test="displayStatus != null and displayStatus != ''">
+                AND DISPLAY_STATUS = #{displayStatus}
+            </if>
+        </where>
+    </sql>
+
+    <select id="selectAll" parameterType="com.bsps.order.ordersheet.OrderSheet" resultMap="orderSheetResultMap">
+            SELECT
+                ORDER_SHEET_NO
+                , EMAIL_ADDRESS
+                , ZIP_CODE
+                , ADDRESS
+                , DETAIL_ADDRESS
+                , ORDER_DATE
+                , CANCLE_DATE
+                , ORDER_PRICE
+                , PAYMENT_STATUS
+                , DISPLAY_STATUS
+            FROM ORDER_SHEET
+            <include refid="whereSql" />
+            ORDER BY ORDER_DATE DESC
+    </select>
+
+    <select id="select" parameterType="com.bsps.order.ordersheet.OrderSheet" resultMap="orderSheetResultMap">
+        SELECT
+            ORDER_SHEET_NO
+          	, EMAIL_ADDRESS
+            , ZIP_CODE
+            , ADDRESS
+            , DETAIL_ADDRESS
+            , ORDER_DATE
+            , CANCLE_DATE
+            , ORDER_PRICE
+            , PAYMENT_STATUS
+            , DISPLAY_STATUS
+        FROM ORDER_SHEET
+        <include refid="whereSql" />
+    </select>
+
+    <insert id="insert" parameterType="com.bsps.order.ordersheet.OrderSheet">
+        INSERT INTO ORDER_SHEET (
+            ORDER_SHEET_NO
+            , EMAIL_ADDRESS
+            , ZIP_CODE
+            , ADDRESS
+            , DETAIL_ADDRESS
+            , ORDER_DATE
+            , ORDER_PRICE
+        ) VALUES (
+            #{orderSheetNo}
+            , #{emailAddress}
+            , #{zipCode}
+            , #{address}
+            , #{detailAddress}
+            , #{orderDate}
+            , #{orderPrice}
+        )
+    </insert>
+
+    <update id="update" parameterType="com.bsps.order.ordersheet.OrderSheet">
+        UPDATE ORDER_SHEET
+        <set>
+            <if test="orderSheetNo != null and orderSheetNo != ''">
+            	ORDER_SHEET_NO = #{orderSheetNo},
+            </if>
+            <if test="emailAddress != null and emailAddress != ''">
+            	EMAIL_ADDRESS = #{emailAddress},
+            </if>
+            <if test="zipCode != null and zipCode != ''">
+                ZIP_CODE = #{zipCode},
+            </if>
+            <if test="address != null and address != ''">
+                ADDRESS = #{address},
+            </if>
+            <if test="detailAddress != null and detailAddress != ''">
+                DETAIL_ADDRESS = #{detailAddress},
+            </if>
+            <if test="orderDate != null">
+                ORDER_DATE = #{orderDate},
+            </if>
+            <if test="cancleDate != null">
+                CANCLE_DATE = #{cancleDate},
+            </if>
+            <if test="orderPrice != 0 and orderPrice != ''">
+                ORDER_PRICE = #{orderPrice},
+            </if>
+            <if test="paymentStatus != '\u0000' and paymentStatus != ''">
+                PAYMENT_STATUS = #{paymentStatus},
+            </if>
+            <if test="displayStatus != '\u0000' and displayStatus != ''">
+                DISPLAY_STATUS = #{displayStatus},
+            </if>
+        </set>
+        WHERE ORDER_SHEET_NO = ${orderSheetNo}
+    </update>
+
+    <delete id="delete" parameterType="com.bsps.order.ordersheet.OrderSheet">
+        DELETE FROM ORDER_SHEET
+        <include refid="whereSql" />
+    </delete>
+</mapper>
